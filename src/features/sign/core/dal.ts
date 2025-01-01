@@ -4,23 +4,6 @@ import { RegisterSettings, NewUser } from "./types";
 export async function createUser(user: NewUser, regSettings: RegisterSettings, activationToken?: string) {
     const connection = await pool.getConnection();
     try {
-        /* let baseQuery = `
-            INSERT INTO users (email, password, name, active) VALUES (?, ?, ?, ?, ?);
-            INSERT INTO user_roles (user_id, role_id) VALUES (?, ?);
-            `;
-        let baseValues = [regSettings.newUserId, user.email, regSettings.hashPassword, user.name, user.active, regSettings.newUserId, regSettings.defaultRoleId];
-
-        if (!user.active && activationToken) {
-            baseQuery += `
-                INSERT INTO activation_tokens (user_id, token, expires_at) VALUES (?, ?, ?);
-            `;
-            // should expire in 1h
-            const expirationDate = (new Date(Date.now() + 1000 * 60 * 60)).toISOString();
-            baseValues.push(regSettings.newUserId, activationToken, expirationDate);
-        }
-        const result = await new DTO({query: baseQuery, values: baseValues, connection}).query();
-        return result; */
-
         const usersQuery = `INSERT INTO users (email, password, name, active) VALUES (?, ?, ?, ?);`;
         const userValues = [user.email, regSettings.hashPassword, user.name, user.active];
         const result = await new DTO({query: usersQuery, values: userValues, connection}).query();
