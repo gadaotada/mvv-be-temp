@@ -1,0 +1,66 @@
+logging:
+  enabled: true
+  appLevel:
+    enabled: true
+  databaseLevel:
+    enabled: false
+    table: app_logs
+    schema: /path-to-schema
+  fileLevel:
+    enabled: true
+    dir: /logs
+    prefix: app-logs
+    maxFileSize: 10485760
+    maxFiles: 7
+  externalLevel:
+    enabled: false
+    endPoint: https://some-domain.com/
+cron:
+  enabled: false
+mail:
+  enabled: true
+  smtp:
+    host: localhost
+    port: 465
+    secure: false
+    auth:
+      user: null
+      pass: null
+  defaultFrom: myemail@example.com
+  queueSettings:
+    maxRetries: 3
+    retryDelay: 3000
+    maxConcurrent: 10
+
+upload:
+  strategy: ${UPLOAD_STRATEGY:-local}  # local, memory (for tests)
+  maxFileSize: ${UPLOAD_MAX_SIZE:-1024000000}  # 1024MB in bytes
+  maxUploadDirSize: ${UPLOAD_MAX_DIR_SIZE:-1024000000}  # 1024MB in bytes
+  allowedMimes:
+    images:
+      - image/jpeg
+      - image/png
+      - image/gif
+      - image/webp
+      - image/jpg
+    documents:
+      - application/pdf
+      - application/msword
+      - application/vnd.openxmlformats-officedocument.wordprocessingml.document  # docx
+      - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet  # xlsx
+    archives:
+      - application/zip
+      - application/x-7z-compressed
+      - application/x-rar-compressed
+  storage:
+    local:
+      basePath: ${UPLOAD_PATH:- ./uploads}  # Base path for uploads
+      baseUrl: ${UPLOAD_URL:-/uploads}        # Base URL for public access
+      structure: ${UPLOAD_STRUCTURE:-date}     # date, hash, or flat
+      permissions: ${UPLOAD_PERMISSIONS:-0644} # File permissions
+
+auth:
+  tokenExpiration: ${AUTH_TOKEN_EXPIRATION:- 15} # 15 minutes
+  tokenLength: ${AUTH_TOKEN_LENGTH:-32}
+  tokenAlgorithm: ${AUTH_TOKEN_ALGO:-HS256} # HS256, HS384, HS512
+  cacheCleanupInterval: ${AUTH_CACHE_CLEANUP_INTERVAL:- 7} # 7hours

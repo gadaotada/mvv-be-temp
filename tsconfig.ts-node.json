@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "ts-node": {
+    "files": true,
+    "require": ["tsconfig-paths/register"]
+  },
+  "compilerOptions": {
+    "types": ["node", "Multer"],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/app.d.ts",
+      "./src/global/**/*.d.ts"
+    ]
+  }
+}
