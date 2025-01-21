@@ -93,6 +93,7 @@ export class SessionManager {
             const query = `SELECT * FROM sessions WHERE id = ? AND access_token_expires_at > NOW() LIMIT 1`;
             const values = [sessionId];
             const result = await new DTO({query, values, connection}).query();
+            connection.release();
             if (!result.success || result.data.length === 0) {
                 return [null, result.error];
             }
@@ -139,6 +140,7 @@ export class SessionManager {
         const query = `DELETE FROM sessions WHERE id = ?`;
         const values = [sessionId];
         const result = await new DTO({query, values, connection}).query();
+        connection.release();
         if (!result.success) {
             const newError = AppError.createDatabaseError('Failed to delete session', {
                 type: "Database",
@@ -164,6 +166,7 @@ export class SessionManager {
         const query = `DELETE FROM sessions WHERE user_id = ?`;
         const values = [userId];
         const result = await new DTO({query, values, connection}).query();
+        connection.release();
         if (!result.success) {
             const newError = AppError.createDatabaseError('Failed to delete session', {
                 type: "Database",
